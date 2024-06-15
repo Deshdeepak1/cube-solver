@@ -1,0 +1,5 @@
+CMakeFiles/
+*.exe
+*.o
+*.so
+CubeSolver
