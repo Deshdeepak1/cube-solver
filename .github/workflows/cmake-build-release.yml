@@ -22,7 +22,7 @@ jobs:
 
     - name: Package executable into ZIP
       run: |
-        cd build/bin
+        cd build
         zip -j ${{ github.repository }}.zip bin/CubeSolver
 
     - name: Upload artifact
