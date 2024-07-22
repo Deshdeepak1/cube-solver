@@ -1,5 +1,4 @@
 #include "Cube.hpp"
-#include <vector>
 
 char Cube::get_color_char(Color color) {
 
@@ -17,7 +16,7 @@ char Cube::get_color_char(Color color) {
   case Color::YELLOW:
     return 'Y';
   default:
-    return '\0';
+    throw std::invalid_argument("Color Not Found");
   }
 }
 
@@ -60,7 +59,7 @@ std::string Cube::get_move(Move move) {
   case Move::D2:
     return "D2";
   default:
-    return "";
+    throw std::invalid_argument("Move Not Found");
   }
 }
 
@@ -103,7 +102,7 @@ Cube &Cube::move(Move move) {
   case Move::D2:
     return this->d2();
   default:
-    return *this;
+    throw std::invalid_argument("Move Not Found");
   }
 }
 
@@ -146,7 +145,7 @@ Cube &Cube::invert(Move move) {
   case Move::D2:
     return this->d2();
   default:
-    return *this;
+    throw std::invalid_argument("Move Not Found");
   }
 }
 

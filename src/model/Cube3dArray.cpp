@@ -2,10 +2,8 @@
 
 class Cube3dArray : public Cube {
 private:
-  Color cube[total_faces][total_rows][total_cols]{};
-
   void rotate_face(const unsigned int face_index) {
-    Color temp[3][3]{};
+    Color temp[total_rows][total_cols]{};
     for (unsigned int j = 0; j < total_rows; j++) {
       for (unsigned int k = 0; k < total_cols; k++) {
         temp[j][k] = cube[face_index][j][k];
@@ -23,6 +21,7 @@ private:
   };
 
 public:
+  Color cube[total_faces][total_rows][total_cols]{};
   Cube3dArray() {
     for (unsigned int i = 0; i < total_faces; i++) {
       for (unsigned int j = 0; j < total_rows; j++) {
@@ -228,4 +227,45 @@ public:
     this->d();
     return *this;
   }
+
+  bool operator==(const Cube3dArray &other) const {
+    for (unsigned int i = 0; i < other.total_faces; i++) {
+      for (unsigned int j = 0; j < other.total_rows; j++) {
+        for (unsigned int k = 0; k < other.total_cols; k++) {
+          if (cube[i][j][k] != other.cube[i][j][k]) {
+            return false;
+          }
+        }
+      }
+    }
+    return true;
+  }
+
+  Cube3dArray &operator=(const Cube3dArray &other) {
+    for (unsigned int i = 0; i < other.total_faces; i++) {
+      for (unsigned int j = 0; j < other.total_rows; j++) {
+        for (unsigned int k = 0; k < other.total_cols; k++) {
+          cube[i][j][k] = other.cube[i][j][k];
+        }
+      }
+    }
+    return *this;
+  }
 };
+
+namespace std {
+template <> struct hash<Cube3dArray> {
+  size_t operator()(const Cube3dArray &cube) const noexcept {
+    string str = "";
+    for (unsigned int i = 0; i < cube.total_faces; i++) {
+      for (unsigned int j = 0; j < cube.total_rows; j++) {
+        for (unsigned int k = 0; k < cube.total_cols; k++) {
+          str += cube.get_color_char(cube.cube[i][j][k]);
+        }
+      }
+    }
+    return hash<string>()(str);
+  }
+};
+
+} // namespace std

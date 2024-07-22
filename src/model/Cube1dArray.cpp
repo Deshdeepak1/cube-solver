@@ -2,18 +2,16 @@
 
 class Cube1dArray : public Cube {
 private:
-  Color cube[54]{};
-
   static inline unsigned int get_index(unsigned int face_index,
                                        unsigned int row, unsigned int col) {
-    return (face_index * 9) + (row * 3) + col;
+    return (face_index * total_face_squares) + (row * total_cols) + col;
   }
 
   void rotate_face(const unsigned int face_index) {
-    Color temp[9]{};
+    Color temp[total_face_squares]{};
     for (unsigned int j = 0; j < total_rows; j++) {
       for (unsigned int k = 0; k < total_cols; k++) {
-        temp[j * 3 + k] = cube[get_index(face_index, j, k)];
+        temp[j * total_cols + k] = cube[get_index(face_index, j, k)];
       }
     }
 
@@ -28,6 +26,8 @@ private:
   };
 
 public:
+  Color cube[total_squares]{};
+
   Cube1dArray() {
     for (unsigned int i = 0; i < total_faces; i++) {
       for (unsigned int j = 0; j < total_rows; j++) {
@@ -45,9 +45,9 @@ public:
   }
 
   bool is_solved() const override {
-    for (unsigned int i = 0; i < 6; i++) {
-      for (unsigned int j = 0; j < 3; j++) {
-        for (unsigned int k = 0; k < 3; k++) {
+    for (unsigned int i = 0; i < total_faces; i++) {
+      for (unsigned int j = 0; j < total_rows; j++) {
+        for (unsigned int k = 0; k < total_cols; k++) {
           if (cube[get_index(i, j, k)] != Color(i)) {
             return false;
           }
@@ -232,4 +232,33 @@ public:
     this->d();
     return *this;
   }
+
+  bool operator==(const Cube1dArray &other) const {
+    for (unsigned int i = 0; i < other.total_squares; i++) {
+      if (cube[i] != other.cube[i]) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  Cube1dArray &operator=(const Cube1dArray &other) {
+    for (unsigned int i = 0; i < other.total_squares; i++) {
+      cube[i] = other.cube[i];
+    }
+    return *this;
+  }
 };
+namespace std {
+
+template <> struct hash<Cube1dArray> {
+  size_t operator()(const Cube1dArray &cube) const noexcept {
+    string str = "";
+    for (unsigned int i = 0; i < cube.total_squares; i++) {
+      str += cube.get_color_char(cube.cube[i]);
+    }
+    return hash<string>()(str);
+  }
+};
+
+} // namespace std

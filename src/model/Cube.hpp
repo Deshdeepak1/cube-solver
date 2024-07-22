@@ -1,11 +1,12 @@
 #pragma once
 
 #include <bits/stdc++.h>
-#include <vector>
 
 class Cube {
 public:
   static const unsigned int total_moves = 18;
+  static const unsigned int total_squares = 54;
+  static const unsigned int total_face_squares = 9;
   static const unsigned int total_faces = 6;
   static const unsigned int total_rows = 3;
   static const unsigned int total_cols = 3;
