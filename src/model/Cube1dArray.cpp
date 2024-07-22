@@ -251,8 +251,10 @@ public:
 };
 namespace std {
 
-template <> struct hash<Cube1dArray> {
+template <>
+struct hash<Cube1dArray> {
   size_t operator()(const Cube1dArray &cube) const noexcept {
+    // cout << "hash Cube1dArray" << endl;
     string str = "";
     for (unsigned int i = 0; i < cube.total_squares; i++) {
       str += cube.get_color_char(cube.cube[i]);

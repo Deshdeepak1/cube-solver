@@ -254,8 +254,10 @@ public:
 };
 
 namespace std {
-template <> struct hash<Cube3dArray> {
+template <>
+struct hash<Cube3dArray> {
   size_t operator()(const Cube3dArray &cube) const noexcept {
+    // cout << "hash Cube3dArray" << endl;
     string str = "";
     for (unsigned int i = 0; i < cube.total_faces; i++) {
       for (unsigned int j = 0; j < cube.total_rows; j++) {

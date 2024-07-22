@@ -1,7 +1,9 @@
 #include "main.hpp"
 #include "model/Cube1dArray.cpp"
 #include "model/Cube3dArray.cpp"
-#include <bits/stdc++.h>
+#include "solver/BFSSolver.hpp"
+#include "solver/DFSSolver.hpp"
+#include "solver/IDDFSSolver.hpp"
 #include <getopt.h>
 #include <ostream>
 
@@ -26,13 +28,42 @@ int main(int argc, char *argv[]) {
   char opt;
   int option_index = 0;
 
+  // if (argv[1][0] == '1') {
+  //   std::cout << 1 << std::endl;
+  //   auto c = Cube1dArray();
+  //   c.random_shuffle(5);
+  //   DFSSolver<Cube1dArray> s(c);
+  //   auto moves = s.solve();
+  //   s.cube.print();
+  //
+  // } else {
+  //   std::cout << 3 << std::endl;
+  //   auto c = Cube3dArray();
+  //   c.random_shuffle(5);
+  //   DFSSolver<Cube3dArray> s(c);
+  //   // DFSSolver<Cube3dArray> s(c);
+  //   auto moves = s.solve();
+  //   s.cube.print();
+  // }
+  // return 0;
   auto c = Cube1dArray();
+  // auto c = Cube3dArray();
   c.print();
-  c.l();
+  c.random_shuffle(7);
   c.print();
-  c.r_prime();
+  // DFSSolver<Cube1dArray> s(c);
+  // BFSSolver<Cube1dArray> s(c);
+  IDDFSSolver<Cube1dArray> s(c);
+  // DFSSolver<Cube3dArray> s(c);
+  // BFSSolver<Cube3dArray> s(c);
+  // DFSSolver<Cube3dArray> s(c);
+  auto moves = s.solve();
+  std::cout << "Solved s.cube: " << s.cube.is_solved() << std::endl;
+  for (auto move : moves) {
+    c.move(move);
+  }
   c.print();
-  std::cout << c.is_solved() << std::endl;
+  std::cout << "Solved c: " << c.is_solved() << std::endl;
   while ((opt = getopt_long(argc, argv, "vh", long_options, &option_index)) !=
          -1) {
     switch (opt) {
