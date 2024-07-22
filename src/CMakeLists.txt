@@ -21,3 +21,4 @@ add_executable(CubeSolver main.cpp
     model/Cube3dArray.cpp
 )
 target_include_directories(CubeSolver PRIVATE model)
+target_link_libraries(CubeSolver PUBLIC "-static")
