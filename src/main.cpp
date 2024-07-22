@@ -1,6 +1,9 @@
 #include "main.hpp"
+#include "model/Cube1dArray.cpp"
+#include "model/Cube3dArray.cpp"
 #include <bits/stdc++.h>
 #include <getopt.h>
+#include <ostream>
 
 void print_version() {
   std::cout << PROJECT_NAME << " " << PROJECT_VERSION << std::endl;
@@ -23,6 +26,13 @@ int main(int argc, char *argv[]) {
   char opt;
   int option_index = 0;
 
+  auto c = Cube1dArray();
+  c.print();
+  c.l();
+  c.print();
+  c.r_prime();
+  c.print();
+  std::cout << c.is_solved() << std::endl;
   while ((opt = getopt_long(argc, argv, "vh", long_options, &option_index)) !=
          -1) {
     switch (opt) {

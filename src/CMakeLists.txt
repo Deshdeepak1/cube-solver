@@ -13,9 +13,11 @@ PROJECT_VERSION="${PROJECT_VERSION}"
 PROJECT_NAME="${PROJECT_NAME}"
 )
 
-include_directories(model)
+
 
 add_executable(CubeSolver main.cpp
     model/Cube.cpp
+    model/Cube1dArray.cpp
+    model/Cube3dArray.cpp
 )
-
+target_include_directories(CubeSolver PRIVATE model)

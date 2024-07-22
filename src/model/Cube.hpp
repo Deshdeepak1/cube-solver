@@ -6,11 +6,12 @@
 class Cube {
 public:
   static const unsigned int total_moves = 18;
+  static const unsigned int total_faces = 6;
   static const unsigned int total_rows = 3;
   static const unsigned int total_cols = 3;
   static const unsigned int top_down_offset = 7;
 
-  enum class Color {
+  enum class Color : unsigned int {
     WHITE,
     GREEN,
     RED,
@@ -19,7 +20,7 @@ public:
     YELLOW,
   };
 
-  enum class Face {
+  enum class Face : unsigned int {
     UP,
     LEFT,
     FRONT,
