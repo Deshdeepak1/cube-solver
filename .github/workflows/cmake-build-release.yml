@@ -23,13 +23,13 @@ jobs:
     - name: Package executable into ZIP
       run: |
         cd build
-        zip -j ${{ github.repository }}.zip bin/CubeSolver
+        zip -j ${{ github.event.repository.name }}.zip bin/CubeSolver
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ github.repository }}
-        path: build/${{ github.repository }}.zip
+        name: ${{ github.event.repository.name }}
+        path: build/${{ github.event.repository.name }}.zip
 
   release:
     needs: build
@@ -39,7 +39,7 @@ jobs:
     - name: Download artifact
       uses: actions/download-artifact@v4
       with:
-        name: ${{ github.repository }}
+        name: ${{ github.event.repository.name }}
 
     - name: Create GitHub Release
       id: create_release
@@ -58,6 +58,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: build/${{ github.repository }}.zip
-        asset_name: ${{ github.repository }}-${{ github.ref }}.zip
+        asset_path: build/${{ github.event.repository.name }}.zip
+        asset_name: ${{ github.event.repository.name }}-${{ github.ref }}.zip
         asset_content_type: application/zip
