@@ -46,6 +46,7 @@ public:
   std::vector<Cube::Move> solve() {
     T solved_cube = bfs();
     assert(solved_cube.is_solved());
+
     T temp_cube = solved_cube;
     while (!(temp_cube == cube)) {
       Cube::Move move = cube_move[temp_cube];

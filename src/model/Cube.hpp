@@ -87,4 +87,10 @@ public:
   virtual Cube &d() = 0;
   virtual Cube &d_prime() = 0;
   virtual Cube &d2() = 0;
+
+  std::string get_corner_color_string(uint8_t ind) const;
+
+  uint8_t get_corner_index(uint8_t ind) const;
+
+  uint8_t get_corner_orientation(uint8_t ind) const;
 };
