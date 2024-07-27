@@ -65,7 +65,7 @@ int main(int argc, char *argv[]) {
   // auto c = Cube3dArray();
   auto c = CubeBitboard();
   c.print();
-  unsigned int shuffle_times = 5;
+  unsigned int shuffle_times = 7;
   auto moves = c.random_shuffle(shuffle_times);
   Cube::print_moves(moves);
   c.print();
