@@ -63,6 +63,14 @@ std::string Cube::get_move(Move move) {
   }
 }
 
+void Cube::print_moves(const std::vector<Move> &moves) {
+  std::cout << "Moves:- ";
+  for (auto move : moves) {
+    std::cout << get_move(move) << " ";
+  }
+  std::cout << std::endl;
+}
+
 Cube &Cube::move(Move move) {
   switch (move) {
   case Move::U:

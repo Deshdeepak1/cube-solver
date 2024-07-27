@@ -50,6 +50,7 @@ public:
 
   static char get_color_char(Color color);
   static std::string get_move(Move move);
+  static void print_moves(const std::vector<Move> &moves);
 
   virtual Color get_color(Face face, unsigned int row,
                           unsigned int col) const = 0;

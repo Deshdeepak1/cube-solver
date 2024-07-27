@@ -1,8 +1,11 @@
 #include "main.hpp"
 #include "model/Cube1dArray.cpp"
 #include "model/Cube3dArray.cpp"
+#include "model/CubeBitboard.cpp"
+#include "pattern_databases/CornerDBMaker.hpp"
 #include "solver/BFSSolver.hpp"
 #include "solver/DFSSolver.hpp"
+#include "solver/IDAStarSolver.hpp"
 #include "solver/IDDFSSolver.hpp"
 #include <getopt.h>
 #include <ostream>
@@ -28,6 +31,11 @@ int main(int argc, char *argv[]) {
   char opt;
   int option_index = 0;
 
+  std::string corner_db_file_name = "./databases/corner_db.bin";
+  // CornerDBMaker db_maker(corner_db_file_name, 0x99);
+  // db_maker.bfs_and_store();
+  // return 0;
+
   // if (argv[1][0] == '1') {
   //   std::cout << 1 << std::endl;
   //   auto c = Cube1dArray();
@@ -46,18 +54,26 @@ int main(int argc, char *argv[]) {
   //   s.cube.print();
   // }
   // return 0;
-  auto c = Cube1dArray();
+  // auto c = Cube1dArray();
   // auto c = Cube3dArray();
+  auto c = CubeBitboard();
   c.print();
-  c.random_shuffle(7);
+  auto moves = c.random_shuffle(7);
+  Cube::print_moves(moves);
   c.print();
   // DFSSolver<Cube1dArray> s(c);
   // BFSSolver<Cube1dArray> s(c);
-  IDDFSSolver<Cube1dArray> s(c);
+  // IDDFSSolver<Cube1dArray> s(c);
+  // IDAStarSolver<Cube1dArray> s(c, "");
   // DFSSolver<Cube3dArray> s(c);
   // BFSSolver<Cube3dArray> s(c);
   // DFSSolver<Cube3dArray> s(c);
-  auto moves = s.solve();
+  // DFSSolver<CubeBitboard> s(c);
+  // BFSSolver<CubeBitboard> s(c);
+  // IDDFSSolver<CubeBitboard> s(c);
+  IDAStarSolver<CubeBitboard> s(c, corner_db_file_name);
+  moves = s.solve();
+  Cube::print_moves(moves);
   std::cout << "Solved s.cube: " << s.cube.is_solved() << std::endl;
   for (auto move : moves) {
     c.move(move);

@@ -19,6 +19,12 @@ add_executable(CubeSolver main.cpp
     model/Cube.cpp
     model/Cube1dArray.cpp
     model/Cube3dArray.cpp
+    model/CubeBitboard.cpp
+    pattern_databases/math.cpp
+    pattern_databases/NibbleArray.cpp
+    pattern_databases/PatternDatabase.cpp
+    pattern_databases/CornerPatternDatabase.cpp
+    pattern_databases/CornerDBMaker.cpp
 )
 target_include_directories(CubeSolver PRIVATE model)
 target_link_libraries(CubeSolver PUBLIC "-static")
