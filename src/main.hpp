@@ -5,3 +5,7 @@
 #ifndef PROJECT_NAME
 #define PROJECT_NAME "Main"
 #endif
+
+#ifndef DATABASES
+#define DATABASES "./resources/databases"
+#endif

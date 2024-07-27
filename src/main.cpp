@@ -10,6 +10,12 @@
 #include <getopt.h>
 #include <ostream>
 
+std::filesystem::path exe_path =
+    std::filesystem::canonical("/proc/self/exe").remove_filename();
+
+std::string corner_db_file_name =
+    exe_path / (std::filesystem::path(DATABASES) / "corner_db.bin");
+
 void print_version() {
   std::cout << PROJECT_NAME << " " << PROJECT_VERSION << std::endl;
 }
@@ -31,7 +37,8 @@ int main(int argc, char *argv[]) {
   char opt;
   int option_index = 0;
 
-  std::string corner_db_file_name = "./databases/corner_db.bin";
+  std::cout << exe_path << std::endl;
+
   // CornerDBMaker db_maker(corner_db_file_name, 0x99);
   // db_maker.bfs_and_store();
   // return 0;
@@ -58,19 +65,21 @@ int main(int argc, char *argv[]) {
   // auto c = Cube3dArray();
   auto c = CubeBitboard();
   c.print();
-  auto moves = c.random_shuffle(7);
+  unsigned int shuffle_times = 5;
+  auto moves = c.random_shuffle(shuffle_times);
   Cube::print_moves(moves);
   c.print();
-  // DFSSolver<Cube1dArray> s(c);
   // BFSSolver<Cube1dArray> s(c);
-  // IDDFSSolver<Cube1dArray> s(c);
-  // IDAStarSolver<Cube1dArray> s(c, "");
-  // DFSSolver<Cube3dArray> s(c);
+  // DFSSolver<Cube1dArray> s(c, shuffle_times);
+  // IDDFSSolver<Cube1dArray> s(c, shuffle_times);
+  // IDAStarSolver<Cube1dArray> s(c, corner_db_file_name);
   // BFSSolver<Cube3dArray> s(c);
-  // DFSSolver<Cube3dArray> s(c);
-  // DFSSolver<CubeBitboard> s(c);
+  // DFSSolver<Cube3dArray> s(c, shuffle_times);
+  // IDDFSSolver<Cube3dArray> s(c, shuffle_times);
+  // IDAStarSolver<Cube3dArray> s(c, corner_db_file_name);
   // BFSSolver<CubeBitboard> s(c);
-  // IDDFSSolver<CubeBitboard> s(c);
+  // DFSSolver<CubeBitboard> s(c, shuffle_times);
+  // IDDFSSolver<CubeBitboard> s(c, shuffle_times);
   IDAStarSolver<CubeBitboard> s(c, corner_db_file_name);
   moves = s.solve();
   Cube::print_moves(moves);

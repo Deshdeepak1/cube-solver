@@ -45,6 +45,17 @@ public:
     }
   }
 
+  void set_cubies(const Color cube[total_faces][total_rows][total_cols]) {
+    for (unsigned int side = 0; side < total_faces; side++) {
+      uint64_t color = 1 << side;
+      bitboard[side] = 0;
+      for (unsigned int face_idx = 0; face_idx < 8; face_idx++) {
+        bitboard[side] |= color << (8 * face_idx);
+      }
+      solved_bitboard[side] = bitboard[side];
+    }
+  }
+
   Color get_color(Face face, unsigned int row,
                   unsigned int col) const override {
     const unsigned int face_index = static_cast<unsigned int>(face);
