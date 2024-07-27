@@ -19,10 +19,8 @@ bool CornerDBMaker::bfs_and_store() {
   while (!q.empty()) {
     unsigned int n = q.size();
     curr_depth++;
-    std::cout << "curr_depth: " << curr_depth << std::endl;
     if (curr_depth == 9) break;
     for (unsigned int counter = 0; counter < n; counter++) {
-      std::cout << "counter: " << counter << std::endl;
       CubeBitboard neighbour = q.front();
       q.pop();
 

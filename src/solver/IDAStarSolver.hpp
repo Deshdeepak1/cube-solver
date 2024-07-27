@@ -2,23 +2,22 @@
 
 #include "../model/Cube.hpp"
 #include "../pattern_databases/CornerPatternDatabase.hpp"
-#include <unordered_map>
-#include <utility>
+#include "Solver.hpp"
 
-template <typename T>
-class IDAStarSolver {
+template <typename CubeType>
+class IDAStarSolver : public Solver<CubeType> {
 private:
   CornerPatternDatabase corner_db;
   std::vector<Cube::Move> moves;
-  std::unordered_map<T, bool> visited;
-  std::unordered_map<T, Cube::Move> cube_move;
+  std::unordered_map<CubeType, bool> visited;
+  std::unordered_map<CubeType, Cube::Move> cube_move;
 
   struct Node {
-    T cube;
+    CubeType cube;
     unsigned int depth;
     unsigned int estimate;
 
-    Node(T cube, unsigned int depth, unsigned int estimate)
+    Node(CubeType cube, unsigned int depth, unsigned int estimate)
         : cube(cube), depth(depth), estimate(estimate){};
   };
 
@@ -39,7 +38,7 @@ private:
     cube_move.clear();
   }
 
-  std::pair<T, unsigned int> IDAStar(unsigned int max_bound) {
+  std::pair<CubeType, unsigned int> IDAStar(unsigned int max_bound) {
     std::priority_queue<std::pair<Node, unsigned int>,
                         std::vector<std::pair<Node, unsigned int>>,
                         compare_cube>
@@ -87,16 +86,16 @@ private:
   }
 
 public:
-  T cube;
+  CubeType cube;
 
-  IDAStarSolver(T cube, std::string file_name) {
+  IDAStarSolver(CubeType cube, std::string file_name) {
     this->cube = cube;
     corner_db.from_file(file_name);
   }
 
   std::vector<Cube::Move> solve() {
     unsigned int max_bound = 1;
-    std::pair<T, unsigned int> p;
+    std::pair<CubeType, unsigned int> p;
     while (true) {
       p = IDAStar(max_bound);
       if (p.second == max_bound) {
@@ -106,10 +105,10 @@ public:
       max_bound = p.second;
     }
 
-    T solved_cube = p.first;
+    CubeType solved_cube = p.first;
     assert(solved_cube.is_solved());
 
-    T temp_cube = solved_cube;
+    CubeType temp_cube = solved_cube;
     while (!(temp_cube == cube)) {
       Cube::Move move = cube_move[temp_cube];
       moves.push_back(move);

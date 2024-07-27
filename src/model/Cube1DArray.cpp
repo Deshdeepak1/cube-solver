@@ -1,6 +1,6 @@
 #include "Cube.hpp"
 
-class Cube1dArray : public Cube {
+class Cube1DArray : public Cube {
 private:
   static inline unsigned int get_index(unsigned int face_index,
                                        unsigned int row, unsigned int col) {
@@ -28,7 +28,7 @@ private:
 public:
   Color cube[total_squares]{};
 
-  Cube1dArray() {
+  Cube1DArray() {
     for (unsigned int i = 0; i < total_faces; i++) {
       for (unsigned int j = 0; j < total_rows; j++) {
         for (unsigned int k = 0; k < total_cols; k++) {
@@ -233,7 +233,7 @@ public:
     return *this;
   }
 
-  bool operator==(const Cube1dArray &other) const {
+  bool operator==(const Cube1DArray &other) const {
     for (unsigned int i = 0; i < other.total_squares; i++) {
       if (cube[i] != other.cube[i]) {
         return false;
@@ -242,7 +242,7 @@ public:
     return true;
   }
 
-  Cube1dArray &operator=(const Cube1dArray &other) {
+  Cube1DArray &operator=(const Cube1DArray &other) {
     for (unsigned int i = 0; i < other.total_squares; i++) {
       cube[i] = other.cube[i];
     }
@@ -252,9 +252,8 @@ public:
 namespace std {
 
 template <>
-struct hash<Cube1dArray> {
-  size_t operator()(const Cube1dArray &cube) const noexcept {
-    // cout << "hash Cube1dArray" << endl;
+struct hash<Cube1DArray> {
+  size_t operator()(const Cube1DArray &cube) const noexcept {
     string str = "";
     for (unsigned int i = 0; i < cube.total_squares; i++) {
       str += cube.get_color_char(cube.cube[i]);

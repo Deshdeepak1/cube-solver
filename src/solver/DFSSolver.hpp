@@ -1,9 +1,10 @@
 #pragma once
 
 #include "../model/Cube.hpp"
+#include "Solver.hpp"
 
-template <typename T>
-class DFSSolver {
+template <typename CubeType>
+class DFSSolver : public Solver<CubeType> {
 private:
   // std::unordered_map<T, bool> visited;
   // std::unordered_map<T, unsigned int> depths;
@@ -34,9 +35,9 @@ private:
 public:
   static const unsigned int MAX_SEARCH_DEPTH = 8;
 
-  T cube;
+  CubeType cube;
 
-  DFSSolver(T cube, unsigned int max_search_depth = MAX_SEARCH_DEPTH) {
+  DFSSolver(CubeType cube, unsigned int max_search_depth = MAX_SEARCH_DEPTH) {
     this->cube = cube;
     this->max_search_depth = max_search_depth;
   }

@@ -1,23 +1,21 @@
 #pragma once
 
-#include "../model/Cube.hpp"
-#include <algorithm>
-#include <cassert>
+#include "Solver.hpp"
 
-template <typename T>
-class BFSSolver {
+template <typename CubeType>
+class BFSSolver : public Solver<CubeType> {
 private:
-  std::unordered_map<T, bool> visited;
-  std::unordered_map<T, Cube::Move> cube_move;
+  std::unordered_map<CubeType, bool> visited;
+  std::unordered_map<CubeType, Cube::Move> cube_move;
   std::vector<Cube::Move> moves;
 
-  T bfs() {
-    std::queue<T> q;
+  CubeType bfs() {
+    std::queue<CubeType> q;
     q.push(cube);
     visited[cube] = true;
 
     while (!q.empty()) {
-      T node = q.front();
+      CubeType node = q.front();
       q.pop();
       if (node.is_solved()) {
         return node;
@@ -39,15 +37,15 @@ private:
   }
 
 public:
-  T cube;
+  CubeType cube;
 
-  BFSSolver(T cube) { this->cube = cube; }
+  BFSSolver(CubeType cube) { this->cube = cube; }
 
   std::vector<Cube::Move> solve() {
-    T solved_cube = bfs();
+    CubeType solved_cube = bfs();
     assert(solved_cube.is_solved());
 
-    T temp_cube = solved_cube;
+    CubeType temp_cube = solved_cube;
     while (!(temp_cube == cube)) {
       Cube::Move move = cube_move[temp_cube];
       moves.push_back(move);

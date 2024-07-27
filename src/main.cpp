@@ -1,108 +1,97 @@
 #include "main.hpp"
-#include "model/Cube1dArray.cpp"
-#include "model/Cube3dArray.cpp"
-#include "model/CubeBitboard.cpp"
+#include "cli.hpp"
 #include "pattern_databases/CornerDBMaker.hpp"
-#include "solver/BFSSolver.hpp"
-#include "solver/DFSSolver.hpp"
-#include "solver/IDAStarSolver.hpp"
-#include "solver/IDDFSSolver.hpp"
-#include <getopt.h>
-#include <ostream>
+#include <boost/program_options.hpp>
+
+namespace po = boost::program_options;
 
 std::filesystem::path exe_path =
     std::filesystem::canonical("/proc/self/exe").remove_filename();
 
-std::string corner_db_file_name =
+std::string default_corner_db_file_name =
     exe_path / (std::filesystem::path(DATABASES) / "corner_db.bin");
 
 void print_version() {
-  std::cout << PROJECT_NAME << " " << PROJECT_VERSION << std::endl;
+  std::cout << PROJECT_NAME << " " << PROJECT_VERSION << "\n";
 }
 
-void print_help() {
-  std::cout << "Usage: " << PROJECT_NAME << " [options]\n"
-            << "Options:\n"
-            << "  -v, --version   Print the project version\n"
-            << "  -h, --help      Print this help message\n";
-}
+void print_usage() { std::cout << "Usage: " << PROJECT_NAME << " [options]\n"; }
 
 int main(int argc, char *argv[]) {
-  static struct option long_options[] = {
-      {"version", no_argument, 0, 'v'},
-      {"help", no_argument, 0, 'h'},
-      {0, 0, 0, 0},
-  };
+  try {
+    po::options_description desc("Allowed options");
+    // clang-format off
+    desc.add_options()
+    ("help,h", "Print this help message")
+    ("version,v", "Print the project version")
+    ("model,m", po::value<int>()->default_value(3)->value_name("MODEL"),
+     "Choose model:\n"
+     "1: 1DArray\n"
+     "2: 3DArray\n"
+     "3: Bitboard")
+    ("solver,s", po::value<int>()->default_value(4)->value_name("SOLVER"),
+     "Choose solver:\n"
+     "1: BFS\n"
+     "2: DFS\n"
+     "3: IDDFS\n"
+     "4: IDAStar")
+    ("random-shuffles,r", po::value<unsigned int>()->default_value(6)->value_name("RANDOM_SHUFFLES"),
+     "Number of random shuffles")
+    ("corner-db,d", po::value<std::string>()->default_value(default_corner_db_file_name)->value_name("CORNER_DB"),
+     "Path to the corner DB file")
+    ("corner-db-make,c", po::value<std::string>()->value_name("CORNER_DB"),
+     "Make corner db at CORNER_DB")
+    ;
+    // clang-format on
 
-  char opt;
-  int option_index = 0;
+    po::variables_map vm;
+    po::store(po::parse_command_line(argc, argv, desc), vm);
 
-  std::cout << exe_path << std::endl;
-
-  // CornerDBMaker db_maker(corner_db_file_name, 0x99);
-  // db_maker.bfs_and_store();
-  // return 0;
-
-  // if (argv[1][0] == '1') {
-  //   std::cout << 1 << std::endl;
-  //   auto c = Cube1dArray();
-  //   c.random_shuffle(5);
-  //   DFSSolver<Cube1dArray> s(c);
-  //   auto moves = s.solve();
-  //   s.cube.print();
-  //
-  // } else {
-  //   std::cout << 3 << std::endl;
-  //   auto c = Cube3dArray();
-  //   c.random_shuffle(5);
-  //   DFSSolver<Cube3dArray> s(c);
-  //   // DFSSolver<Cube3dArray> s(c);
-  //   auto moves = s.solve();
-  //   s.cube.print();
-  // }
-  // return 0;
-  // auto c = Cube1dArray();
-  // auto c = Cube3dArray();
-  auto c = CubeBitboard();
-  c.print();
-  unsigned int shuffle_times = 7;
-  auto moves = c.random_shuffle(shuffle_times);
-  Cube::print_moves(moves);
-  c.print();
-  // BFSSolver<Cube1dArray> s(c);
-  // DFSSolver<Cube1dArray> s(c, shuffle_times);
-  // IDDFSSolver<Cube1dArray> s(c, shuffle_times);
-  // IDAStarSolver<Cube1dArray> s(c, corner_db_file_name);
-  // BFSSolver<Cube3dArray> s(c);
-  // DFSSolver<Cube3dArray> s(c, shuffle_times);
-  // IDDFSSolver<Cube3dArray> s(c, shuffle_times);
-  // IDAStarSolver<Cube3dArray> s(c, corner_db_file_name);
-  // BFSSolver<CubeBitboard> s(c);
-  // DFSSolver<CubeBitboard> s(c, shuffle_times);
-  // IDDFSSolver<CubeBitboard> s(c, shuffle_times);
-  IDAStarSolver<CubeBitboard> s(c, corner_db_file_name);
-  moves = s.solve();
-  Cube::print_moves(moves);
-  std::cout << "Solved s.cube: " << s.cube.is_solved() << std::endl;
-  for (auto move : moves) {
-    c.move(move);
-  }
-  c.print();
-  std::cout << "Solved c: " << c.is_solved() << std::endl;
-  while ((opt = getopt_long(argc, argv, "vh", long_options, &option_index)) !=
-         -1) {
-    switch (opt) {
-    case 'h':
-      print_help();
+    if (vm.count("help")) {
+      print_usage();
+      std::cout << desc;
       return 0;
-    case 'v':
+    }
+
+    if (vm.count("version")) {
       print_version();
       return 0;
-    case '?':
-      return 1;
-    default:
-      break;
     }
+
+    po::notify(vm);
+
+    if (vm.count("corner-db-make")) {
+      std::string corner_db_file_name = vm["corner-db-make"].as<std::string>();
+      CornerDBMaker corner_db(corner_db_file_name);
+      corner_db.bfs_and_store();
+      return 0;
+    }
+
+    int model_type = vm["model"].as<int>();
+    if (model_type < 1 || model_type > 3) {
+      throw std::invalid_argument("MODEL type must be 1, 2, or 3.");
+    }
+
+    int solver_type = vm["solver"].as<int>();
+    if (solver_type < 1 || solver_type > 4) {
+      throw std::invalid_argument("SOLVER type must be >= 1 && <= 4");
+    }
+
+    unsigned int random_shuffles = vm["random-shuffles"].as<unsigned int>();
+    if (random_shuffles < 1) {
+      throw std::invalid_argument("RANDOM_SHUFFLES type must be positive");
+    }
+
+    std::string corner_db_file_name = vm["corner-db"].as<std::string>();
+
+    solve_cube(model_type, solver_type, random_shuffles, corner_db_file_name);
+
+  } catch (const std::exception &e) {
+    std::cerr << "Error: " << e.what() << "\n";
+    return 1;
+  } catch (...) {
+    std::cerr << "Unknown error!\n";
+    return 1;
   }
   return 0;
 }

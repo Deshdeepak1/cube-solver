@@ -63,12 +63,20 @@ std::string Cube::get_move(Move move) {
   }
 }
 
-void Cube::print_moves(const std::vector<Move> &moves) {
-  std::cout << "Moves:- ";
+void Cube::print_moves(const std::vector<Move> &moves,
+                       const std::string &text) {
+  std::cout << text << ":- ";
   for (auto move : moves) {
     std::cout << get_move(move) << " ";
   }
-  std::cout << std::endl;
+  std::cout << "\n\n";
+}
+void Cube::print_moves_cube(const std::vector<Move> &moves) {
+  for (auto move : moves) {
+    std::cout << "->" << get_move(move) << "->" << "\n";
+    this->move(move);
+    print();
+  }
 }
 
 Cube &Cube::move(Move move) {

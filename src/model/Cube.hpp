@@ -50,7 +50,8 @@ public:
 
   static char get_color_char(Color color);
   static std::string get_move(Move move);
-  static void print_moves(const std::vector<Move> &moves);
+  static void print_moves(const std::vector<Move> &moves,
+                          const std::string &text = "Moves");
 
   virtual Color get_color(Face face, unsigned int row,
                           unsigned int col) const = 0;
@@ -58,6 +59,7 @@ public:
   virtual bool is_solved() const = 0;
 
   void print() const;
+  void print_moves_cube(const std::vector<Move> &moves);
 
   std::vector<Move> random_shuffle(unsigned int times);
 

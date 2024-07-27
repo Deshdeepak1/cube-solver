@@ -1,8 +1,10 @@
 add_executable(CubeSolver main.cpp
+    cli.cpp
     model/Cube.cpp
-    model/Cube1dArray.cpp
-    model/Cube3dArray.cpp
+    model/Cube1DArray.cpp
+    model/Cube3DArray.cpp
     model/CubeBitboard.cpp
+    model/CubeFactory.cpp
     pattern_databases/math.cpp
     pattern_databases/NibbleArray.cpp
     pattern_databases/PatternDatabase.cpp
@@ -15,6 +17,12 @@ add_executable(CubeSolver main.cpp
 target_include_directories(CubeSolver PRIVATE
     model
     pattern_databases
+    ${Boost_INCLUDE_DIRS}
+
+)
+
+target_link_libraries(CubeSolver PRIVATE
+    ${Boost_LIBRARIES}
 )
 
 target_link_options(CubeSolver PRIVATE -static)

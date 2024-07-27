@@ -58,14 +58,12 @@ void PatternDatabase::to_file(const std::string &file_path) const {
 
 bool PatternDatabase::from_file(const std::string &file_path) {
   std::ifstream reader(file_path, std::ios::in | std::ios::ate);
-  std::cout << file_path << " ";
 
   if (!reader.is_open()) {
     return false;
   }
 
   size_t file_size = reader.tellg();
-  std::cout << file_size << std::endl;
 
   if (file_size != this->database.storage_size()) {
     reader.close();
