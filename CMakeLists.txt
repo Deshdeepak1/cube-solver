@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.29)
 
-set(VERSION_MAJOR 0)
-set(VERSION_MINOR 8)
+set(VERSION_MAJOR 1)
+set(VERSION_MINOR 0)
 set(VERSION ${VERSION_MAJOR}.${VERSION_MINOR})
 
 project(CubeSolver
