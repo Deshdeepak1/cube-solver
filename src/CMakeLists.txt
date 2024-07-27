@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.29)
 project(CubeSolver
-    VERSION 0.6
+    VERSION 0.7
     DESCRIPTION "Rubik's Cube Solver"
 )
 
