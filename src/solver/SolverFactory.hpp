@@ -7,21 +7,20 @@
 #include "Solver.hpp"
 
 template <typename CubeType>
-std::unique_ptr<Solver<CubeType>>
-create_solver(CubeType *cube, const int solver_type,
-              const unsigned int random_shuffles,
-              const std::string &corner_db_file_name) {
+std::unique_ptr<Solver<CubeType>> create_solver(
+    CubeType *cube, const int solver_type, const unsigned int random_shuffles,
+    const std::string &corner_db_file_name) {
   switch (solver_type) {
-  case 1:
-    return std::make_unique<BFSSolver<CubeType>>(*cube);
-  case 2:
-    return std::make_unique<DFSSolver<CubeType>>(*cube, random_shuffles);
-  case 3:
-    return std::make_unique<IDDFSSolver<CubeType>>(*cube, random_shuffles);
-  case 4:
-    return std::make_unique<IDAStarSolver<CubeType>>(*cube,
-                                                     corner_db_file_name);
-  default:
-    throw std::invalid_argument("Invalid solver_type");
+    case 0:
+      return std::make_unique<BFSSolver<CubeType>>(*cube);
+    case 1:
+      return std::make_unique<DFSSolver<CubeType>>(*cube, random_shuffles);
+    case 2:
+      return std::make_unique<IDDFSSolver<CubeType>>(*cube, random_shuffles);
+    case 3:
+      return std::make_unique<IDAStarSolver<CubeType>>(*cube,
+                                                       corner_db_file_name);
+    default:
+      throw std::invalid_argument("Invalid solver_type");
   }
 }

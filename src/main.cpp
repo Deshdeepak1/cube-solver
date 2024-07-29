@@ -1,15 +1,18 @@
 #include "main.hpp"
-#include "cli.hpp"
-#include "pattern_databases/CornerDBMaker.hpp"
+
 #include <boost/program_options.hpp>
+
+#include "pattern_databases/CornerDBMaker.hpp"
+#include "ui/cli.hpp"
+#include "ui/tui.hpp"
 
 namespace po = boost::program_options;
 
 std::filesystem::path exe_path =
-    std::filesystem::canonical("/proc/self/exe").remove_filename();
+  std::filesystem::canonical("/proc/self/exe").remove_filename();
 
 std::string default_corner_db_file_name =
-    exe_path / (std::filesystem::path(DATABASES) / "corner_db.bin");
+  exe_path / (std::filesystem::path(DATABASES) / "corner_db.bin");
 
 void print_version() {
   std::cout << PROJECT_NAME << " " << PROJECT_VERSION << "\n";
@@ -84,7 +87,11 @@ int main(int argc, char *argv[]) {
 
     std::string corner_db_file_name = vm["corner-db"].as<std::string>();
 
-    solve_cube(model_type, solver_type, random_shuffles, corner_db_file_name);
+    auto ui =
+      CubeCLI(model_type, solver_type, random_shuffles, corner_db_file_name);
+    // auto ui =
+    //   CubeTUI(model_type, solver_type, random_shuffles, corner_db_file_name);
+    ui.run();
 
   } catch (const std::exception &e) {
     std::cerr << "Error: " << e.what() << "\n";

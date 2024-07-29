@@ -1,5 +1,6 @@
 add_executable(CubeSolver main.cpp
-    cli.cpp
+    ui/cli.cpp
+    ui/tui.cpp
     model/Cube.cpp
     model/Cube1DArray.cpp
     model/Cube3DArray.cpp
@@ -18,11 +19,13 @@ target_include_directories(CubeSolver PRIVATE
     model
     pattern_databases
     ${Boost_INCLUDE_DIRS}
-
 )
 
 target_link_libraries(CubeSolver PRIVATE
     ${Boost_LIBRARIES}
+    ftxui::screen
+    ftxui::dom
+    ftxui::component
 )
 
 target_link_options(CubeSolver PRIVATE -static)

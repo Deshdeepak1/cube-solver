@@ -1,7 +1,7 @@
 #include "Cube.hpp"
 
 class Cube3DArray : public Cube {
-private:
+ private:
   void rotate_face(const unsigned int face_index) {
     Color temp[total_rows][total_cols]{};
     for (unsigned int j = 0; j < total_rows; j++) {
@@ -12,16 +12,16 @@ private:
 
     for (unsigned int i = 0; i < 3; i++)
       cube[face_index][0][i] = temp[2 - i][0];
-    for (unsigned int i = 0; i < 3; i++)
-      cube[face_index][i][2] = temp[0][i];
+    for (unsigned int i = 0; i < 3; i++) cube[face_index][i][2] = temp[0][i];
     for (unsigned int i = 0; i < 3; i++)
       cube[face_index][2][2 - i] = temp[i][2];
     for (unsigned int i = 0; i < 3; i++)
       cube[face_index][2 - i][0] = temp[2][2 - i];
   };
 
-public:
+ public:
   Color cube[total_faces][total_rows][total_cols]{};
+
   Cube3DArray() {
     for (unsigned int i = 0; i < total_faces; i++) {
       for (unsigned int j = 0; j < total_rows; j++) {
@@ -57,19 +57,15 @@ public:
     this->rotate_face(face_index);
 
     Color temp[3]{};
-    for (unsigned int i = 0; i < 3; i++)
-      temp[i] = cube[4][0][i];
-    for (unsigned int i = 0; i < 3; i++)
-      cube[4][0][i] = cube[1][0][i];
-    for (unsigned int i = 0; i < 3; i++)
-      cube[1][0][i] = cube[2][0][i];
-    for (unsigned int i = 0; i < 3; i++)
-      cube[2][0][i] = cube[3][0][i];
-    for (unsigned int i = 0; i < 3; i++)
-      cube[3][0][i] = temp[i];
+    for (unsigned int i = 0; i < 3; i++) temp[i] = cube[4][0][i];
+    for (unsigned int i = 0; i < 3; i++) cube[4][0][i] = cube[1][0][i];
+    for (unsigned int i = 0; i < 3; i++) cube[1][0][i] = cube[2][0][i];
+    for (unsigned int i = 0; i < 3; i++) cube[2][0][i] = cube[3][0][i];
+    for (unsigned int i = 0; i < 3; i++) cube[3][0][i] = temp[i];
 
     return *this;
   }
+
   Cube &u_prime() override {
     this->u();
     this->u();
@@ -88,24 +84,21 @@ public:
     this->rotate_face(face_index);
 
     Color temp[3]{};
-    for (unsigned int i = 0; i < 3; i++)
-      temp[i] = cube[0][i][0];
-    for (unsigned int i = 0; i < 3; i++)
-      cube[0][i][0] = cube[4][2 - i][2];
-    for (unsigned int i = 0; i < 3; i++)
-      cube[4][2 - i][2] = cube[5][i][0];
-    for (unsigned int i = 0; i < 3; i++)
-      cube[5][i][0] = cube[2][i][0];
-    for (unsigned int i = 0; i < 3; i++)
-      cube[2][i][0] = temp[i];
+    for (unsigned int i = 0; i < 3; i++) temp[i] = cube[0][i][0];
+    for (unsigned int i = 0; i < 3; i++) cube[0][i][0] = cube[4][2 - i][2];
+    for (unsigned int i = 0; i < 3; i++) cube[4][2 - i][2] = cube[5][i][0];
+    for (unsigned int i = 0; i < 3; i++) cube[5][i][0] = cube[2][i][0];
+    for (unsigned int i = 0; i < 3; i++) cube[2][i][0] = temp[i];
     return *this;
   }
+
   Cube &l_prime() override {
     this->l();
     this->l();
     this->l();
     return *this;
   }
+
   Cube &l2() override {
     this->l();
     this->l();
@@ -117,24 +110,21 @@ public:
     this->rotate_face(face_index);
 
     Color temp[3]{};
-    for (unsigned int i = 0; i < 3; i++)
-      temp[i] = cube[0][2][i];
-    for (unsigned int i = 0; i < 3; i++)
-      cube[0][2][i] = cube[1][2 - i][2];
-    for (unsigned int i = 0; i < 3; i++)
-      cube[1][2 - i][2] = cube[5][0][2 - i];
-    for (unsigned int i = 0; i < 3; i++)
-      cube[5][0][2 - i] = cube[3][i][0];
-    for (unsigned int i = 0; i < 3; i++)
-      cube[3][i][0] = temp[i];
+    for (unsigned int i = 0; i < 3; i++) temp[i] = cube[0][2][i];
+    for (unsigned int i = 0; i < 3; i++) cube[0][2][i] = cube[1][2 - i][2];
+    for (unsigned int i = 0; i < 3; i++) cube[1][2 - i][2] = cube[5][0][2 - i];
+    for (unsigned int i = 0; i < 3; i++) cube[5][0][2 - i] = cube[3][i][0];
+    for (unsigned int i = 0; i < 3; i++) cube[3][i][0] = temp[i];
     return *this;
   }
+
   Cube &f_prime() override {
     this->f();
     this->f();
     this->f();
     return *this;
   }
+
   Cube &f2() override {
     this->f();
     this->f();
@@ -146,24 +136,21 @@ public:
     this->rotate_face(face_index);
 
     Color temp[3]{};
-    for (unsigned int i = 0; i < 3; i++)
-      temp[i] = cube[0][i][2];
-    for (unsigned int i = 0; i < 3; i++)
-      cube[0][i][2] = cube[2][i][2];
-    for (unsigned int i = 0; i < 3; i++)
-      cube[2][i][2] = cube[5][i][2];
-    for (unsigned int i = 0; i < 3; i++)
-      cube[5][i][2] = cube[4][2 - i][0];
-    for (unsigned int i = 0; i < 3; i++)
-      cube[4][2 - i][0] = temp[i];
+    for (unsigned int i = 0; i < 3; i++) temp[i] = cube[0][i][2];
+    for (unsigned int i = 0; i < 3; i++) cube[0][i][2] = cube[2][i][2];
+    for (unsigned int i = 0; i < 3; i++) cube[2][i][2] = cube[5][i][2];
+    for (unsigned int i = 0; i < 3; i++) cube[5][i][2] = cube[4][2 - i][0];
+    for (unsigned int i = 0; i < 3; i++) cube[4][2 - i][0] = temp[i];
     return *this;
   }
+
   Cube &r_prime() override {
     this->r();
     this->r();
     this->r();
     return *this;
   }
+
   Cube &r2() override {
     this->r();
     this->r();
@@ -175,24 +162,21 @@ public:
     rotate_face(face_index);
 
     Color temp[3]{};
-    for (unsigned int i = 0; i < 3; i++)
-      temp[i] = cube[0][0][i];
-    for (unsigned int i = 0; i < 3; i++)
-      cube[0][0][i] = cube[3][i][2];
-    for (unsigned int i = 0; i < 3; i++)
-      cube[3][i][2] = cube[5][2][2 - i];
-    for (unsigned int i = 0; i < 3; i++)
-      cube[5][2][2 - i] = cube[1][2 - i][0];
-    for (unsigned int i = 0; i < 3; i++)
-      cube[1][2 - i][0] = temp[i];
+    for (unsigned int i = 0; i < 3; i++) temp[i] = cube[0][0][i];
+    for (unsigned int i = 0; i < 3; i++) cube[0][0][i] = cube[3][i][2];
+    for (unsigned int i = 0; i < 3; i++) cube[3][i][2] = cube[5][2][2 - i];
+    for (unsigned int i = 0; i < 3; i++) cube[5][2][2 - i] = cube[1][2 - i][0];
+    for (unsigned int i = 0; i < 3; i++) cube[1][2 - i][0] = temp[i];
     return *this;
   }
+
   Cube &b_prime() override {
     this->b();
     this->b();
     this->b();
     return *this;
   }
+
   Cube &b2() override {
     this->b();
     this->b();
@@ -204,24 +188,21 @@ public:
     rotate_face(face_index);
 
     Color temp[3]{};
-    for (unsigned int i = 0; i < 3; i++)
-      temp[i] = cube[2][2][i];
-    for (unsigned int i = 0; i < 3; i++)
-      cube[2][2][i] = cube[1][2][i];
-    for (unsigned int i = 0; i < 3; i++)
-      cube[1][2][i] = cube[4][2][i];
-    for (unsigned int i = 0; i < 3; i++)
-      cube[4][2][i] = cube[3][2][i];
-    for (unsigned int i = 0; i < 3; i++)
-      cube[3][2][i] = temp[i];
+    for (unsigned int i = 0; i < 3; i++) temp[i] = cube[2][2][i];
+    for (unsigned int i = 0; i < 3; i++) cube[2][2][i] = cube[1][2][i];
+    for (unsigned int i = 0; i < 3; i++) cube[1][2][i] = cube[4][2][i];
+    for (unsigned int i = 0; i < 3; i++) cube[4][2][i] = cube[3][2][i];
+    for (unsigned int i = 0; i < 3; i++) cube[3][2][i] = temp[i];
     return *this;
   }
+
   Cube &d_prime() override {
     this->d();
     this->d();
     this->d();
     return *this;
   }
+
   Cube &d2() override {
     this->d();
     this->d();
@@ -269,4 +250,4 @@ struct hash<Cube3DArray> {
   }
 };
 
-} // namespace std
+}  // namespace std
