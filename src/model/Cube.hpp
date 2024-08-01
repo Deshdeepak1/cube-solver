@@ -3,16 +3,16 @@
 #include <bits/stdc++.h>
 
 class Cube {
-public:
-  static const unsigned int total_moves = 18;
-  static const unsigned int total_squares = 54;
-  static const unsigned int total_face_squares = 9;
-  static const unsigned int total_faces = 6;
-  static const unsigned int total_rows = 3;
-  static const unsigned int total_cols = 3;
-  static const unsigned int top_down_offset = 7;
+ public:
+  static const int total_moves = 18;
+  static const int total_squares = 54;
+  static const int total_face_squares = 9;
+  static const int total_faces = 6;
+  static const int total_rows = 3;
+  static const int total_cols = 3;
+  static const int top_down_offset = 7;
 
-  enum class Color : unsigned int {
+  enum class Color : int {
     WHITE,
     GREEN,
     RED,
@@ -21,7 +21,7 @@ public:
     YELLOW,
   };
 
-  enum class Face : unsigned int {
+  enum class Face : int {
     UP,
     LEFT,
     FRONT,
@@ -31,10 +31,10 @@ public:
   };
 
   static constexpr Face middle_faces[4] = {
-      Face::LEFT,
-      Face::FRONT,
-      Face::RIGHT,
-      Face::BACK,
+    Face::LEFT,
+    Face::FRONT,
+    Face::RIGHT,
+    Face::BACK,
   };
 
   // clang-format off
@@ -53,15 +53,18 @@ public:
   static void print_moves(const std::vector<Move> &moves,
                           const std::string &text = "Moves");
 
-  virtual Color get_color(Face face, unsigned int row,
-                          unsigned int col) const = 0;
+  virtual Color get_color(Face face, int row, int col) const = 0;
 
   virtual bool is_solved() const = 0;
+
+  virtual std::unique_ptr<Cube> clone() const = 0;
+
+  bool operator==(const Cube &other) const;
 
   void print() const;
   void print_moves_cube(const std::vector<Move> &moves);
 
-  std::vector<Move> random_shuffle(unsigned int times);
+  std::vector<Move> random_shuffle(int times);
 
   Cube &move(Move move);
 

@@ -6,7 +6,7 @@
 
 template <typename CubeType>
 class IDAStarSolver : public Solver<CubeType> {
-private:
+ private:
   CornerPatternDatabase corner_db;
   std::vector<Cube::Move> moves;
   std::unordered_map<CubeType, bool> visited;
@@ -14,16 +14,16 @@ private:
 
   struct Node {
     CubeType cube;
-    unsigned int depth;
-    unsigned int estimate;
+    int depth;
+    int estimate;
 
-    Node(CubeType cube, unsigned int depth, unsigned int estimate)
+    Node(CubeType cube, int depth, int estimate)
         : cube(cube), depth(depth), estimate(estimate){};
   };
 
   struct compare_cube {
-    bool operator()(const std::pair<Node, unsigned int> &p1,
-                    const std::pair<Node, unsigned int> &p2) {
+    bool operator()(const std::pair<Node, int> &p1,
+                    const std::pair<Node, int> &p2) {
       const Node &n1 = p1.first, &n2 = p2.first;
       if (n1.depth + n1.estimate == n2.depth + n2.estimate) {
         return n1.estimate > n2.estimate;
@@ -38,16 +38,15 @@ private:
     cube_move.clear();
   }
 
-  std::pair<CubeType, unsigned int> IDAStar(unsigned int max_bound) {
-    std::priority_queue<std::pair<Node, unsigned int>,
-                        std::vector<std::pair<Node, unsigned int>>,
+  std::pair<CubeType, int> IDAStar(int max_bound) {
+    std::priority_queue<std::pair<Node, int>, std::vector<std::pair<Node, int>>,
                         compare_cube>
-        pq;
+      pq;
 
     Node start = Node(cube, 0, corner_db.get_num_moves(cube));
     pq.push(std::make_pair(start, 0));
 
-    unsigned int next_bound = 100;
+    int next_bound = 100;
 
     while (!pq.empty()) {
       auto p = pq.top();
@@ -67,7 +66,7 @@ private:
 
       node.depth++;
 
-      for (unsigned int i = 0; i < Cube::total_moves; i++) {
+      for (int i = 0; i < Cube::total_moves; i++) {
         Cube::Move move = Cube::Move(i);
         node.cube.move(move);
         if (!visited[node.cube]) {
@@ -85,7 +84,7 @@ private:
     return std::make_pair(cube, next_bound);
   }
 
-public:
+ public:
   CubeType cube;
 
   IDAStarSolver(CubeType cube, std::string file_name) {
@@ -94,8 +93,8 @@ public:
   }
 
   std::vector<Cube::Move> solve() {
-    unsigned int max_bound = 1;
-    std::pair<CubeType, unsigned int> p;
+    int max_bound = 1;
+    std::pair<CubeType, int> p;
     while (true) {
       p = IDAStar(max_bound);
       if (p.second == max_bound) {

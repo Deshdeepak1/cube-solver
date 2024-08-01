@@ -38,12 +38,13 @@ int main(int argc, char *argv[]) {
      "2: DFS\n"
      "3: IDDFS\n"
      "4: IDAStar")
-    ("random-shuffles,r", po::value<unsigned int>()->default_value(6)->value_name("RANDOM_SHUFFLES"),
+    ("random-shuffles,r", po::value<int>()->default_value(6)->value_name("RANDOM_SHUFFLES"),
      "Number of random shuffles")
     ("corner-db,d", po::value<std::string>()->default_value(default_corner_db_file_name)->value_name("CORNER_DB"),
      "Path to the corner DB file")
     ("corner-db-make,c", po::value<std::string>()->value_name("CORNER_DB"),
      "Make corner db at CORNER_DB")
+    ("tui,t", "Use TUI")
     ;
     // clang-format on
 
@@ -80,18 +81,22 @@ int main(int argc, char *argv[]) {
       throw std::invalid_argument("SOLVER type must be >= 1 && <= 4");
     }
 
-    unsigned int random_shuffles = vm["random-shuffles"].as<unsigned int>();
+    int random_shuffles = vm["random-shuffles"].as<int>();
     if (random_shuffles < 1) {
       throw std::invalid_argument("RANDOM_SHUFFLES type must be positive");
     }
 
     std::string corner_db_file_name = vm["corner-db"].as<std::string>();
 
-    auto ui =
-      CubeCLI(model_type, solver_type, random_shuffles, corner_db_file_name);
-    // auto ui =
-    //   CubeTUI(model_type, solver_type, random_shuffles, corner_db_file_name);
-    ui.run();
+    std::unique_ptr<UI> ui;
+    if (vm.count("tui")) {
+      ui = std::make_unique<CubeTUI>(model_type, solver_type, random_shuffles,
+                                     corner_db_file_name);
+    } else {
+      ui = std::make_unique<CubeCLI>(model_type, solver_type, random_shuffles,
+                                     corner_db_file_name);
+    }
+    ui->run();
 
   } catch (const std::exception &e) {
     std::cerr << "Error: " << e.what() << "\n";

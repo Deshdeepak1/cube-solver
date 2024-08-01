@@ -4,7 +4,7 @@
 
 template <typename CubeType>
 class BFSSolver : public Solver<CubeType> {
-private:
+ private:
   std::unordered_map<CubeType, bool> visited;
   std::unordered_map<CubeType, Cube::Move> cube_move;
   std::vector<Cube::Move> moves;
@@ -21,7 +21,7 @@ private:
         return node;
       }
 
-      for (unsigned int i = 0; i < Cube::total_moves; i++) {
+      for (int i = 0; i < Cube::total_moves; i++) {
         Cube::Move move = Cube::Move(i);
         node.move(move);
         if (!visited[node]) {
@@ -36,7 +36,7 @@ private:
     return cube;
   }
 
-public:
+ public:
   CubeType cube;
 
   BFSSolver(CubeType cube) { this->cube = cube; }

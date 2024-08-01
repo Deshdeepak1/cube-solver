@@ -1,6 +1,7 @@
 add_executable(CubeSolver main.cpp
     ui/cli.cpp
     ui/tui.cpp
+    ui/scroller.cpp
     model/Cube.cpp
     model/Cube1DArray.cpp
     model/Cube3DArray.cpp

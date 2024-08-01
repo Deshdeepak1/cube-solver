@@ -8,8 +8,8 @@
 
 template <typename CubeType>
 std::unique_ptr<Solver<CubeType>> create_solver(
-    CubeType *cube, const int solver_type, const unsigned int random_shuffles,
-    const std::string &corner_db_file_name) {
+  CubeType *cube, const int solver_type, const int random_shuffles,
+  const std::string &corner_db_file_name) {
   switch (solver_type) {
     case 0:
       return std::make_unique<BFSSolver<CubeType>>(*cube);

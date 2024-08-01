@@ -15,8 +15,8 @@ class UI {
   std::string corner_db_file_name;
 
  public:
-  UI(const int model_type, const int solver_type,
-     const unsigned int random_shuffles, const std::string &corner_db_file_name)
+  UI(const int model_type, const int solver_type, const int random_shuffles,
+     const std::string &corner_db_file_name)
       : model_selected(model_type - 1),
         solver_selected(solver_type - 1),
         random_shuffles(random_shuffles),

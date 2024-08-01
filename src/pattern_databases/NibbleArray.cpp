@@ -36,7 +36,7 @@ size_t NibbleArray::storage_size() const { return this->arr.size(); }
 void NibbleArray::inflate(std::vector<uint8_t> &dest) const {
   dest.reserve(this->size);
 
-  for (unsigned int i = 0; this->size; ++i) {
+  for (int i = 0; this->size; ++i) {
     dest.push_back(this->get(i));
   }
 }
