@@ -165,8 +165,8 @@ void CubeTUI::run() {
   auto shuffle_dropdown = Dropdown(&shuffle_entries, &random_shuffles);
   shuffle_dropdown |= window_comp("Random Shuffle");
 
-  std::string display_mode_button_texts[] = {"Switch to Text mode (m)",
-                                             "Switch to Canvas mode (m)"};
+  std::string display_mode_button_texts[] = {"Switch to Canvas mode (m)",
+                                             "Switch to Text mode (m)"};
 
   std::string display_mode_button_text =
     display_mode_button_texts[(bool)current_display_mode];
